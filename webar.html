@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AR Wallpaper Preview</title>
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js@1.7.2/aframe/build/aframe-ar.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    select, button {
+      padding: 8px;
+      margin: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <label for="wallpaperSelect">Choose a Wallpaper:</label>
+    <select id="wallpaperSelect">
+      <option value="Marshall Cover Pic.jpg">Elegant Beige</option>
+      <option value="Marshall Cover Pic1.jpg">Modern Grey</option>
+      <option value="Marshall Cover Pic2.jpg">Classic Floral</option>
+    </select>
+    <button onclick="changeWallpaper()">Apply Wallpaper</button>
+    <button onclick="startAR()">View in Your Room</button>
+  </div>
+
+  <a-scene embedded arjs>
+    <a-camera position="0 1.6 0"></a-camera>
+    <a-plane id="wall" width="4" height="3" position="0 1.5 -3"
+             material="src: wallpapers/Marshall Cover Pic.jpg; side: double;" crossOrigin="anonymous">
+             #material="src: wallpaper-ar-app/wallpapers/Marshall Cover Pic.jpg; side: double;" crossOrigin="anonymous">
+    </a-plane>
+  </a-scene>
+
+  <script>
+    function changeWallpaper() {
+      const selected = document.getElementById("wallpaperSelect").value;
+      const path = "wallpapers/" + selected;
+      document.getElementById("wall").setAttribute("material", "src: " + path);
+    }
+
+    function startAR() {
+      const scene = document.querySelector("a-scene");
+      scene.setAttribute("embedded", "false");
+      scene.setAttribute("arjs", "sourceType: webcam; debugUIEnabled: false;");
+    }
+  </script>
+
+</body>
+</html>
